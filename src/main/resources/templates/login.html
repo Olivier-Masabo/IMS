@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login | IMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #c62828, #8e0000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            background: white;
+            padding: 40px;
+            width: 350px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #c62828;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #c62828;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #c62828;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #a81c1c;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Airtel_IMS Login</h2>
+
+    <form th:action="@{/login}" method="post">
+        <input type="text" name="username" placeholder="Username" required/>
+        <input type="password" name="password" placeholder="Password" required/>
+        <button type="submit">Login</button>
+    </form>
+
+    <p th:if="${param.error}" class="error">
+        Invalid credentials
+    </p>
+</div>
+
+</body>
+</html>

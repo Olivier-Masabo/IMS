@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users Management | Airtel System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background: #c62828;
+            position: fixed;
+            color: white;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin: 0;
+        }
+
+        .sidebar .nav-menu {
+            padding: 16px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 16px;
+            margin: 4px 0;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .sidebar a.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: 600;
+            border-left: 3px solid #ffd966;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 28px 32px;
+        }
+
+        .content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 24px;
+            border-left: 4px solid #c62828;
+            padding-left: 16px;
+        }
+
+        form {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 32px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        form input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: 'Inter', Arial, sans-serif;
+            width: 220px;
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: #c62828;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: 'Inter', Arial, sans-serif;
+            transition: all 0.2s;
+        }
+            .logout {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.15);
+            color: #ffd966 !important;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #218838;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+            margin-right: 8px;
+        }
+
+        .btn-edit:hover {
+            background: #e0a800;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .users-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .users-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            background: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #2c3e50;
+            font-size: 0.85rem;
+        }
+
+        tr:hover td {
+            background: #fef6f6;
+        }
+
+        .department-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        @media (max-width: 900px) {
+            form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            form input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar h3 {
+                font-size: 0.8rem;
+                padding: 20px 5px;
+            }
+            .sidebar a span {
+                display: none;
+            }
+            .content {
+                margin-left: 70px;
+                padding: 20px 16px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h3>Airtel_IMS</h3>
+    <div class="nav-menu">
+        <a th:href="@{/dashboard}"><span>Dashboard</span></a>
+        <a th:href="@{/assets}"><span>Assets</span></a>
+        <a th:href="@{/users}" class="active"><span>Users</span></a>
+        <a th:href="@{/assignments}"><span>Assignments</span></a>
+        <a th:href="@{/maintenance}"><span>Maintenance</span></a>
+        <a th:href="@{/audits}"><span>Audits</span></a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</div>
+
+<div class="content">
+    <h2>User Management</h2>
+
+    <form th:action="@{/users/save}" method="post" th:object="${user}">
+        <input type="hidden" th:field="*{id}" />
+        <input type="text" th:field="*{name}" placeholder="Full Name" required />
+        <input type="text" th:field="*{department}" placeholder="Department" required />
+        <button class="btn-save" type="submit">Save User</button>
+    </form>
+
+    <div class="users-section">
+        <h3>All Users</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="u : ${users}">
+                    <td th:text="${u.id}">1</td>
+                    <td th:text="${u.name}">John Doe</td>
+                    <td><span class="department-badge" th:text="${u.department}">IT</span></td>
+                    <td>
+                        <a th:href="@{/users/edit/{id}(id=${u.id})}">
+                            <button class="btn-edit">Edit</button>
+                        </a>
+                        <a th:href="@{/users/delete/{id}(id=${u.id})}"
+                           onclick="return confirm('Delete this user?')">
+                            <button class="btn-delete">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jane Smith</td>
+                    <td><span class="department-badge">HR</span></td>
+                    <td>
+                        <button class="btn-edit">Edit</button>
+                        <button class="btn-delete" onclick="return confirm('Delete this user?')">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Robert Johnson</td>
+                    <td><span class="department-badge">Finance</span></td>
+                    <td>
+                        <button class="btn-edit">Edit</button>
+                        <button class="btn-delete" onclick="return confirm('Delete this user?')">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

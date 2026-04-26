@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Airtel System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background: #c62828;
+            position: fixed;
+            color: white;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .nav-menu {
+            padding: 16px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 16px;
+            margin: 4px 0;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .sidebar a.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: 600;
+            border-left: 3px solid #ffd966;
+        }
+
+        /* ✅ LOGOUT STYLE */
+        .logout {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.15);
+            color: #ffd966 !important;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 28px 32px;
+        }
+
+        .content h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 28px;
+            border-left: 4px solid #c62828;
+            padding-left: 16px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .card h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .card h1 {
+            margin-top: 8px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #c62828;
+        }
+
+        .recent-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            background: #f8f9fa;
+            font-size: 0.8rem;
+        }
+
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>Airtel_IMS</h2>
+
+    <div class="nav-menu">
+        <a th:href="@{/dashboard}" class="active">Dashboard</a>
+        <a th:href="@{/assets}">Assets</a>
+        <a th:href="@{/users}">Users</a>
+        <a th:href="@{/assignments}">Assignments</a>
+        <a th:href="@{/maintenance}">Maintenance</a>
+        <a th:href="@{/audits}">Audits</a>
+        
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+    <h2>Dashboard Overview</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Total Assets</h3>
+            <h1 th:text="${totalAssets}">0</h1>
+        </div>
+        <div class="card">
+            <h3>Available</h3>
+            <h1 th:text="${availableAssets}">0</h1>
+        </div>
+        <div class="card">
+            <h3>Assigned</h3>
+            <h1 th:text="${assignedAssets}">0</h1>
+        </div>
+        <div class="card">
+            <h3>Users</h3>
+            <h1 th:text="${totalUsers}">0</h1>
+        </div>
+        <div class="card">
+            <h3>Assignments</h3>
+            <h1 th:text="${totalAssignments}">0</h1>
+        </div>
+    </div>
+
+    <div class="recent-section">
+        <h3>Recent Assets</h3>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Serial</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+
+            <tr th:each="a : ${recentAssets}">
+                <td th:text="${a.id}"></td>
+                <td th:text="${a.serialNumber}"></td>
+                <td th:text="${a.type}"></td>
+                <td th:text="${a.status}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Audit Logs | Airtel System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background: #c62828;
+            position: fixed;
+            color: white;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin: 0;
+        }
+
+        .sidebar .nav-menu {
+            padding: 16px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 16px;
+            margin: 4px 0;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .sidebar a.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: 600;
+            border-left: 3px solid #ffd966;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 28px 32px;
+        }
+
+        .content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 24px;
+            border-left: 4px solid #c62828;
+            padding-left: 16px;
+        }
+
+        .audit-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border-left: 3px solid #c62828;
+        }
+
+        .stat-card span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card strong {
+            font-size: 1.3rem;
+            color: #c62828;
+            margin-left: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            background: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #2c3e50;
+            font-size: 0.85rem;
+        }
+            .logout {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.15);
+            color: #ffd966 !important;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        tr:hover td {
+            background: #fef6f6;
+        }
+
+        .action-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar h3 {
+                font-size: 0.8rem;
+                padding: 20px 5px;
+            }
+            .sidebar a span {
+                display: none;
+            }
+            .content {
+                margin-left: 70px;
+                padding: 20px 16px;
+            }
+            .stats {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h3>Airtel_IMS</h3>
+    <div class="nav-menu">
+        <a th:href="@{/dashboard}"><span>Dashboard</span></a>
+        <a th:href="@{/assets}"><span>Assets</span></a>
+        <a th:href="@{/users}"><span>Users</span></a>
+        <a th:href="@{/assignments}"><span>Assignments</span></a>
+        <a th:href="@{/maintenance}"><span>Maintenance</span></a>
+        <a th:href="@{/audits}" class="active"><span>Audits</span></a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</div>
+
+<div class="content">
+    <h2>Audit Logs</h2>
+
+    <div class="audit-section">
+        <div class="stats">
+            <div class="stat-card">
+                <span>Total Events</span>
+                <strong th:text="${#lists.size(audits)}">0</strong>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Action</th>
+                    <th>Asset ID</th>
+                    <th>From User</th>
+                    <th>To User</th>
+                    <th>Performed By</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="audit : ${audits}">
+                    <td th:text="${audit.id}">1</td>
+                    <td>
+                        <span class="action-badge" 
+                              th:style="'background: ' + (${audit.action} == 'ASSIGN' ? '#e8f5e9' : (${audit.action} == 'RETURN' ? '#ffebee' : '#fff3e0')) + '; color: ' + (${audit.action} == 'ASSIGN' ? '#2e7d32' : (${audit.action} == 'RETURN' ? '#c62828' : '#e65100')) + ';'"
+                              th:text="${audit.action}">ASSIGN</span>
+                    </td>
+                    <td th:text="${audit.assetId}">101</td>
+                    <td th:text="${audit.fromUser}">—</td>
+                    <td th:text="${audit.toUser}">John Doe</td>
+                    <td th:text="${audit.performedBy}">admin@airtel.com</td>
+                    <td th:text="${audit.timestamp}">2024-01-15 10:30:00</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><span class="action-badge" style="background:#ffebee; color:#c62828;">RETURN</span></td>
+                    <td>102</td>
+                    <td>Jane Smith</td>
+                    <td>—</td>
+                    <td>admin@airtel.com</td>
+                    <td>2024-01-20 14:15:00</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><span class="action-badge" style="background:#fff3e0; color:#e65100;">MAINTENANCE</span></td>
+                    <td>103</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>tech@airtel.com</td>
+                    <td>2024-01-22 09:00:00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

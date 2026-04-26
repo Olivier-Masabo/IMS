@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Assignments | Airtel System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background: #c62828;
+            position: fixed;
+            color: white;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin: 0;
+        }
+
+        .sidebar .nav-menu {
+            padding: 16px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 16px;
+            margin: 4px 0;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .sidebar a.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: 600;
+            border-left: 3px solid #ffd966;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 28px 32px;
+        }
+
+        .content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 24px;
+            border-left: 4px solid #c62828;
+            padding-left: 16px;
+        }
+
+        form {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 32px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        form label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        form select, form input {
+            width: 200px;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: 'Inter', Arial, sans-serif;
+            background: white;
+        }
+
+        form select:focus, form input:focus {
+            outline: none;
+            border-color: #c62828;
+        }
+
+        form button {
+            background: #c62828;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        form button:hover {
+            background: #a81c1c;
+        }
+
+        .recent-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .recent-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            background: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #2c3e50;
+            font-size: 0.85rem;
+        }
+
+        tr:hover td {
+            background: #fef6f6;
+        }
+
+        td form {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+        }
+            .logout {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.15);
+            color: #ffd966 !important;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        td button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        td button:hover {
+            background: #b02a37;
+        }
+
+        @media (max-width: 900px) {
+            form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            form select, form input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar h3 {
+                font-size: 0.8rem;
+                padding: 20px 5px;
+            }
+            .sidebar a span {
+                display: none;
+            }
+            .content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h3>Airtel_IMS</h3>
+    <div class="nav-menu">
+        <a th:href="@{/dashboard}"><span>Dashboard</span></a>
+        <a th:href="@{/assets}"><span>Assets</span></a>
+        <a th:href="@{/users}"><span>Users</span></a>
+        <a th:href="@{/assignments}" class="active"><span>Assignments</span></a>
+        <a th:href="@{/maintenance}"><span>Maintenance</span></a>
+        <a th:href="@{/audits}"><span>Audits</span></a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</div>
+
+<div class="content">
+    <h2>Assignments</h2>
+
+    <form th:action="@{/assignments/add}" method="post">
+        <div>
+            <label>Asset</label>
+            <select name="assetId" required>
+                <option value="">Select Asset</option>
+                <option th:each="asset : ${assets}"
+                        th:value="${asset.id}"
+                        th:text="${asset.serialNumber}">
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label>User</label>
+            <select name="userId" required>
+                <option value="">Select User</option>
+                <option th:each="user : ${users}"
+                        th:value="${user.id}"
+                        th:text="${user.name}">
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label>Assigned By</label>
+            <input type="text" name="assignedBy" required/>
+        </div>
+
+        <button type="submit">Assign Device</button>
+    </form>
+
+    <div class="recent-section">
+        <h3>Current Assignments</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Asset</th>
+                    <th>User</th>
+                    <th>Assigned Date</th>
+                    <th>Returned Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="a : ${assignments}">
+                    <td th:text="${a.id}">1</td>
+                    <td th:text="${a.asset.serialNumber}">SN-001</td>
+                    <td th:text="${a.user.name}">John Doe</td>
+                    <td th:text="${a.assignedDate}">2024-01-15</td>
+                    <td th:text="${a.returnedDate}">—</td>
+                    <td>
+                        <form th:action="@{/assignments/return/{id}(id=${a.id})}" method="post">
+                            <button type="submit">Return</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
