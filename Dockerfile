@@ -1,14 +1,8 @@
-# Use Java 17 (recommended for Spring Boot)
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-jammy
 
-# App name
 ARG JAR_FILE=target/*.jar
-
-# Copy jar
 COPY ${JAR_FILE} app.jar
 
-# Expose port
-EXPOSE 8080
+EXPOSE 8082
 
-# Run app
 ENTRYPOINT ["java","-jar","/app.jar"]
